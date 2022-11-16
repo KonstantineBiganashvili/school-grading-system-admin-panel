@@ -9,7 +9,21 @@
   .login__input {
     width: 100%;
     max-width: 300px;
-    background-color: #fff;
+    height: 80px;
+
+    label {
+      background-color: #fff;
+    }
+
+    input {
+      background-color: #fff;
+    }
+
+    p {
+      margin: 0;
+      padding: 2px 5px;
+      background-color: #f5f5f5;
+    }
   }
 
   .login__btn {

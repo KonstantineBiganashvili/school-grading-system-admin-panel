@@ -1,0 +1,22 @@
+.add-user-container {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  padding: 30px;
+  border-radius: 5px;
+  background-color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .add-user-container__btn-group {
+    align-self: flex-end;
+
+    button {
+      margin: 10px;
+    }
+  }
+}

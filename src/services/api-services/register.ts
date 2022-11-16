@@ -1,15 +1,14 @@
-import { RegisterInfo } from '../../interfaces/auth';
+import { RegisterInfo } from '../../interfaces-types/auth';
 import { hash } from 'bcryptjs';
-import { v4 as uuid } from 'uuid';
 import { set, ref } from 'firebase/database';
 import { db } from '../../firebase';
 
-export const login = async (registerInfo: RegisterInfo) => {
+export const register = async (registerInfo: RegisterInfo) => {
   const hashedPassword = await hash(registerInfo.password, 12);
 
   try {
     await set(ref(db, `/Users/${registerInfo.username}`), {
-      id: uuid(),
+      id: registerInfo.id,
       role_id: registerInfo.role_id,
       username: registerInfo.username,
       password: hashedPassword,
