@@ -6,9 +6,11 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../interfaces-types/user';
 import Header from '../../layout/Header';
+import AddSubject from '../Modals/AddSubject';
 
 const AdminPanel = () => {
   const [addUserModalIsOpen, setAddUserModalIsOpen] = useState(false);
+  const [addSubjectModalIsOpen, setAddSubjectModalIsOpen] = useState(false);
   const user: User = useAppSelector((state) => state.user.loggedUser);
   const navigate = useNavigate();
 
@@ -23,9 +25,19 @@ const AdminPanel = () => {
         <Button variant="contained" onClick={() => setAddUserModalIsOpen(true)}>
           Add User
         </Button>
+        <Button
+          variant="contained"
+          onClick={() => setAddSubjectModalIsOpen(true)}
+        >
+          Add Subject
+        </Button>
         <AddUser
-          addUserModalIsOpen={addUserModalIsOpen}
-          setAddUserModalIsOpen={setAddUserModalIsOpen}
+          isOpen={addUserModalIsOpen}
+          setIsOpen={setAddUserModalIsOpen}
+        />
+        <AddSubject
+          isOpen={addSubjectModalIsOpen}
+          setIsOpen={setAddSubjectModalIsOpen}
         />
       </Box>
     </>

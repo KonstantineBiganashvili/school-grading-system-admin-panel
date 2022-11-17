@@ -48,3 +48,17 @@ export const validateAddUserInput = (
     }));
   }
 };
+
+export const validateAddSubject = (
+  value: string,
+  errorFunction: {
+    (value: SetStateAction<string>): void;
+    (arg0: (oldErrors: any) => any): any;
+  }
+) => {
+  if (!value.length) {
+    errorFunction('Please Fill');
+  } else {
+    errorFunction('');
+  }
+};
