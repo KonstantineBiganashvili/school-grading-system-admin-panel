@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../interfaces-types/user';
+import { Subject } from '../interfaces-types/subject';
 
 type InitialState = {
   loggedUser: User;
@@ -14,7 +15,7 @@ const initialState: InitialState = { loggedUser: currentUser } || {
     username: '',
     first_name: '',
     last_name: '',
-    subjects: [],
+    subjects: [] as Subject[],
   },
 };
 
@@ -27,6 +28,17 @@ const userSlice = createSlice({
       localStorage.setItem('user', JSON.stringify(action.payload));
 
       state.loggedUser = action.payload;
+    },
+
+    clearUser(state, action: PayloadAction<undefined>) {
+      state.loggedUser = {
+        id: '',
+        role_id: 0,
+        username: '',
+        first_name: '',
+        last_name: '',
+        subjects: [],
+      };
     },
   },
 });

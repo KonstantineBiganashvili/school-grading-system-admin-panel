@@ -5,7 +5,7 @@ import AddUser from '../Modals/AddUser';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../interfaces-types/user';
-// import ErrorModal from '../Modals/ErrorModal';
+import Header from '../../layout/Header';
 
 const AdminPanel = () => {
   const [addUserModalIsOpen, setAddUserModalIsOpen] = useState(false);
@@ -18,6 +18,7 @@ const AdminPanel = () => {
 
   return (
     <>
+      <Header />
       <Box className="admin-panel-container">
         <Button variant="contained" onClick={() => setAddUserModalIsOpen(true)}>
           Add User
@@ -27,13 +28,6 @@ const AdminPanel = () => {
           setAddUserModalIsOpen={setAddUserModalIsOpen}
         />
       </Box>
-      {/* <ErrorModal
-        error={''}
-        errorModalIsOpen={false}
-        setErrorModalIsOpen={function (state: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      /> */}
     </>
   );
 };

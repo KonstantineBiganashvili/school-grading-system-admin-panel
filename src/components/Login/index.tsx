@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import userSlice from '../../store/user-slice';
 import './Login.scss';
 import { useNavigate } from 'react-router-dom';
-import { validateInput } from '../../helpers/inputValidation';
+import { validateLoginInput } from '../../helpers/inputValidation';
 import errorSlice from '../../store/error-slice';
 
 const Login = () => {
@@ -56,7 +56,11 @@ const Login = () => {
 
   useEffect(() => {
     for (let key in inputInfo) {
-      validateInput(key, inputInfo[key as keyof typeof inputInfo], setError);
+      validateLoginInput(
+        key,
+        inputInfo[key as keyof typeof inputInfo],
+        setError
+      );
     }
   }, [inputInfo]);
 

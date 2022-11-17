@@ -1,3 +1,5 @@
+import { Subject } from './subject';
+
 export interface LoginInfo {
   username: string;
   password: string;
@@ -10,5 +12,5 @@ export interface RegisterInfo {
   password: string;
   first_name: string;
   last_name: string;
-  subjects?: (string | number)[];
+  subjects?: Subject[];
 }

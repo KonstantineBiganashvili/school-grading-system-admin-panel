@@ -14,6 +14,7 @@ export const register = async (registerInfo: RegisterInfo) => {
       password: hashedPassword,
       first_name: registerInfo.first_name,
       last_name: registerInfo.last_name,
+      subjects: registerInfo.subjects,
     });
   } catch (error) {
     console.error(error);
