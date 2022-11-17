@@ -15,7 +15,7 @@ import rolesSlice from '../../../store/roles-slice';
 import { register } from '../../../services/api-services/register';
 import { RegisterInfo } from '../../../interfaces-types/auth';
 import './AddUser.scss';
-import { AddUserInterface } from '../../../interfaces-types/props';
+import { ModalInterface } from '../../../interfaces-types/props';
 import subjectsSlice from '../../../store/subjects-slice';
 import { getSubjects } from '../../../services/api-services/subjects';
 import { Subject } from '../../../interfaces-types/subject';
@@ -23,8 +23,8 @@ import { validateAddUserInput } from '../../../helpers/inputValidation';
 import { checkUser } from '../../../services/api-services/user';
 import errorSlice from '../../../store/error-slice';
 
-const AddUser = (props: AddUserInterface) => {
-  const { addUserModalIsOpen, setAddUserModalIsOpen } = props;
+const AddUser = (props: ModalInterface) => {
+  const { isOpen, setIsOpen } = props;
   const [error, setError] = useState<RegisterInfo>({
     username: '',
     password: '',
@@ -94,7 +94,7 @@ const AddUser = (props: AddUserInterface) => {
       role_id: '',
       subjects: [],
     });
-    setAddUserModalIsOpen(false);
+    setIsOpen(false);
   };
 
   const handleSubmit = async () => {
@@ -147,7 +147,7 @@ const AddUser = (props: AddUserInterface) => {
   }, [inputInfo]);
 
   return (
-    <Modal open={addUserModalIsOpen} onClose={handleClose}>
+    <Modal open={isOpen} onClose={handleClose}>
       <Box className="add-user-container">
         <TextField
           className="add-user-container__input"

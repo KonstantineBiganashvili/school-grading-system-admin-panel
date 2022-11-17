@@ -1,4 +1,4 @@
-export interface AddUserInterface {
-  addUserModalIsOpen: boolean;
-  setAddUserModalIsOpen: (state: boolean) => void;
+export interface ModalInterface {
+  isOpen: boolean;
+  setIsOpen: (state: boolean) => void;
 }
