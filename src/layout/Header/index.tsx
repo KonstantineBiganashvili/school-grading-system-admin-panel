@@ -43,6 +43,11 @@ const Header = () => {
               Admin Panel
             </Link>
           )}
+          {(user.role_id === 1 || user.role_id === 2) && (
+            <Link to={'/users-list'} className="header__links-container__link">
+              Users List
+            </Link>
+          )}
         </Box>
         <Box>
           <Button

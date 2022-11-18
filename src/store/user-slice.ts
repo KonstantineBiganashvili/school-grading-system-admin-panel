@@ -4,12 +4,13 @@ import { Subject } from '../interfaces-types/subject';
 
 type InitialState = {
   loggedUser: User;
+  usersList: any;
 };
 
 const currentUser: User = JSON.parse(localStorage.getItem('user') || '{}');
 
-const initialState: InitialState = { loggedUser: currentUser } || {
-  loggedUser: {
+const initialState: InitialState = {
+  loggedUser: currentUser || {
     id: '',
     role_id: 0,
     username: '',
@@ -17,6 +18,7 @@ const initialState: InitialState = { loggedUser: currentUser } || {
     last_name: '',
     subjects: [] as Subject[],
   },
+  usersList: [],
 };
 
 const userSlice = createSlice({
@@ -39,6 +41,10 @@ const userSlice = createSlice({
         last_name: '',
         subjects: [],
       };
+    },
+
+    setUsersList(state, action: PayloadAction<any>) {
+      state.usersList = action.payload;
     },
   },
 });

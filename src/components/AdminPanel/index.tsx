@@ -5,7 +5,6 @@ import AddUser from '../Modals/AddUser';
 import { useAppSelector } from '../../hooks/redux-hooks';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../interfaces-types/user';
-import Header from '../../layout/Header';
 import AddSubject from '../Modals/AddSubject';
 
 const AdminPanel = () => {
@@ -20,7 +19,6 @@ const AdminPanel = () => {
 
   return (
     <>
-      <Header />
       <Box className="admin-panel-container">
         <Button variant="contained" onClick={() => setAddUserModalIsOpen(true)}>
           Add User

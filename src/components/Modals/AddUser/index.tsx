@@ -20,7 +20,7 @@ import subjectsSlice from '../../../store/subjects-slice';
 import { getSubjects } from '../../../services/api-services/subjects';
 import { Subject } from '../../../interfaces-types/subject';
 import { validateAddUserInput } from '../../../helpers/inputValidation';
-import { checkUser } from '../../../services/api-services/user';
+import { checkUser } from '../../../services/api-services/users';
 import errorSlice from '../../../store/error-slice';
 
 const AddUser = (props: ModalInterface) => {
