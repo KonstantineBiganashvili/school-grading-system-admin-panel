@@ -1,13 +1,16 @@
 import { Box, Button, Modal, TextField } from '@mui/material';
 import { ModalInterface } from '../../../interfaces-types/props';
-import './AddSubject.scss';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { validateAddSubject } from '../../../helpers/inputValidation';
-import { useAppSelector } from '../../../hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux-hooks';
 import { addSubject } from '../../../services/api-services/subjects';
+import errorSlice from '../../../store/error-slice';
+import './AddSubject.scss';
 
 const AddSubject = (props: ModalInterface) => {
   const { isOpen, setIsOpen } = props;
+
+  const dispatch = useAppDispatch();
 
   const [subjectName, setSubjectName] = useState('');
   const [error, setError] = useState('');
@@ -22,14 +25,28 @@ const AddSubject = (props: ModalInterface) => {
     setIsOpen(false);
   };
 
-  const handleAdd = () => {
-    const newSubject = {
-      id: subjects[subjects.length - 1].id + 1,
-      name: subjectName,
-    };
+  const handleAdd = (): void => {
+    if (error.length) return;
 
-    addSubject(newSubject);
-    handleClose();
+    const existingSubject = subjects.find(
+      (existing) => existing.name.toLowerCase() === subjectName.toLowerCase()
+    );
+
+    if (existingSubject) {
+      dispatch(
+        errorSlice.actions.setGlobalError(
+          `Subject with the name '${subjectName}' already exists`
+        )
+      );
+    } else {
+      const newSubject = {
+        id: subjects[subjects.length - 1].id + 1,
+        name: subjectName,
+      };
+
+      addSubject(newSubject);
+      handleClose();
+    }
   };
 
   useEffect(() => {
