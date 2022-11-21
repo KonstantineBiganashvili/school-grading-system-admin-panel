@@ -1,4 +1,4 @@
-import { Button, MenuItem, Select, TableCell, TableRow } from '@mui/material';
+import { MenuItem, Select, TableCell, TableRow } from '@mui/material';
 import { UserRowInterface } from '../../../interfaces-types/props';
 import { useDispatch } from 'react-redux';
 import rolesSlice from '../../../store/roles-slice';
@@ -7,10 +7,16 @@ import { useAppSelector } from '../../../hooks/redux-hooks';
 import { Role } from '../../../interfaces-types/roles-list';
 import { getRoles } from '../../../services/api-services/roles';
 import { getUsersList } from '../../../services/api-services/users';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Subject } from '../../../interfaces-types/subject';
+import './UserRow.scss';
+import DeleteUser from '../UserActions/DeleteUser';
+import EditUser from '../UserActions/EditUser/index';
 
 const UserRow = (props: UserRowInterface) => {
   const { user } = props;
+
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -31,8 +37,8 @@ const UserRow = (props: UserRowInterface) => {
     usersList();
   }, [dispatch]);
 
-  const getSubjects = (subArray: any) =>
-    subArray.map((subject: any) => (
+  const getSubjects = (subArray: Subject[]): JSX.Element[] =>
+    subArray.map((subject: Subject) => (
       <MenuItem
         value={subject.name}
         key={subject.name}
@@ -53,31 +59,25 @@ const UserRow = (props: UserRowInterface) => {
       <TableCell>{getRole(user.role_id)}</TableCell>
       <TableCell>
         {user.subjects?.length ? (
-          <Select value="0" style={{ width: '100%' }}>
-            <MenuItem value="0" style={{ display: 'none' }}>
+          <Select value="0" className="subject-list">
+            <MenuItem value="0" className="subject-list__hidden-item">
               Subjects List
             </MenuItem>
             {getSubjects(user.subjects)}
           </Select>
         ) : (
-          <Select value={'0'} disabled style={{ width: '100%' }}>
+          <Select value={'0'} disabled className="subject-list">
             <MenuItem value={'0'}>No Subjects Available</MenuItem>
           </Select>
         )}
       </TableCell>
-      <TableCell
-        style={{
-          display: 'flex',
-          gap: '10px',
-        }}
-      >
-        <Button variant="contained">Details</Button>
-        <Button variant="contained" color="warning">
-          Edit
-        </Button>
-        <Button variant="contained" color="error">
-          Delete
-        </Button>
+      <TableCell>
+        <EditUser
+          user={user}
+          isOpen={editModalIsOpen}
+          setIsOpen={setEditModalIsOpen}
+        />
+        <DeleteUser username={user.username} />
       </TableCell>
     </TableRow>
   );

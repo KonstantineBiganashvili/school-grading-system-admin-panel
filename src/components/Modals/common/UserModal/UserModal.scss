@@ -1,0 +1,41 @@
+.add-user-container {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  padding: 30px;
+  border-radius: 5px;
+  background-color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .add-user-container__input {
+    height: 80px;
+  }
+
+  .add-user-container__btn-group {
+    align-self: flex-end;
+
+    button {
+      margin: 10px;
+    }
+  }
+
+  .add-user-container__subjects {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    max-height: 150px;
+    overflow-y: auto;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

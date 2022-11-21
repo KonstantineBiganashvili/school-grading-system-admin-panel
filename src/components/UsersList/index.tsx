@@ -6,21 +6,28 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useAppSelector } from '../../hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { User } from '../../interfaces-types/user';
 import UserRow from './UserRow/index';
+import { useEffect } from 'react';
+import { getUsersList } from '../../services/api-services/users';
+import userSlice from '../../store/user-slice';
+import './UsersList.scss';
 
 const UsersList = () => {
+  const dispatch = useAppDispatch();
   const users: User[] = useAppSelector((state) => state.user.usersList);
 
+  useEffect(() => {
+    const usersList = async (): Promise<void> => {
+      dispatch(userSlice.actions.setUsersList(await getUsersList()));
+    };
+
+    usersList();
+  }, [dispatch, users]);
+
   return (
-    <TableContainer
-      style={{
-        margin: 'auto',
-        marginTop: '50px',
-        width: '95%',
-      }}
-    >
+    <TableContainer className="list-container">
       <Table>
         <TableHead>
           <TableRow>
@@ -34,7 +41,7 @@ const UsersList = () => {
         </TableHead>
         <TableBody>
           {users.map((user) => (
-            <UserRow user={user} />
+            <UserRow key={user.username} user={user} />
           ))}
         </TableBody>
       </Table>
