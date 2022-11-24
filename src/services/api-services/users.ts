@@ -1,5 +1,5 @@
 import { RegisterInfo } from '../../interfaces-types/auth';
-import { ref, get, child } from 'firebase/database';
+import { ref, get, child, set } from 'firebase/database';
 import { db } from '../../firebase';
 import { User } from '../../interfaces-types/user';
 
@@ -19,7 +19,7 @@ export const checkUser = async (inputInfo: RegisterInfo) => {
   }
 };
 
-export const getUsersList = async () => {
+export const getUsersList = async (): Promise<User[] | void> => {
   try {
     const arrOfUsers: User[] = [];
     const result = await (await get(child(ref(db), 'Users'))).val();
@@ -29,6 +29,22 @@ export const getUsersList = async () => {
     }
 
     return arrOfUsers;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteUser = async (username: string): Promise<void> => {
+  try {
+    await set(ref(db, `/Users/${username}`), null);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const editUser = async (editedUser: User): Promise<void> => {
+  try {
+    await set(ref(db, `/Users/${editedUser.username}`), editedUser);
   } catch (error) {
     console.error(error);
   }

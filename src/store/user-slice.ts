@@ -4,7 +4,7 @@ import { Subject } from '../interfaces-types/subject';
 
 type InitialState = {
   loggedUser: User;
-  usersList: any;
+  usersList: User[];
 };
 
 const currentUser: User = JSON.parse(localStorage.getItem('user') || '{}');
