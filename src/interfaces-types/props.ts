@@ -12,12 +12,19 @@ export interface UserRowInterface {
   user: User;
 }
 
-export interface userDeleteInterface {
+export interface UserDeleteInterface {
   username: string;
 }
 
-export interface userEditInterface extends ModalInterface {
+export interface UserEditInterface extends ModalInterface {
   user?: User;
+  isEdit?: boolean;
+  setIsEdit?: (state: boolean) => void;
+}
+
+export interface SubjectEditInterface {
+  index: number;
+  subject: Subject;
   isEdit?: boolean;
   setIsEdit?: (state: boolean) => void;
 }
@@ -37,5 +44,24 @@ export interface UserModalInterface {
     | void
   >;
   error: UserValidationError;
+  isEdit: boolean;
+}
+
+export interface SubjectsRowInterface {
+  subject: Subject;
+  index: number;
+}
+
+export interface SubjectDeleteInteface {
+  index: number;
+}
+
+export interface SubjectModalInterface {
+  isOpen: boolean;
+  handleClose: () => void;
+  subjectName: string;
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  error: string;
+  handleSubmit: () => void;
   isEdit: boolean;
 }

@@ -48,6 +48,14 @@ const Header = () => {
               Users List
             </Link>
           )}
+          {(user.role_id === 1 || user.role_id === 2) && (
+            <Link
+              to={'/subjects-list'}
+              className="header__links-container__link"
+            >
+              Subjects List
+            </Link>
+          )}
         </Box>
         <Box>
           <Button

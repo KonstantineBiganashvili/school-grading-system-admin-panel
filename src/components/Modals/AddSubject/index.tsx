@@ -1,4 +1,3 @@
-import { Box, Button, Modal, TextField } from '@mui/material';
 import { ModalInterface } from '../../../interfaces-types/props';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { validateAddSubject } from '../../../helpers/inputValidation';
@@ -6,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux-hooks';
 import { addSubject } from '../../../services/api-services/subjects';
 import errorSlice from '../../../store/error-slice';
 import './AddSubject.scss';
+import SubjectModal from '../common/SubjectModal/index';
 
 const AddSubject = (props: ModalInterface) => {
   const { isOpen, setIsOpen } = props;
@@ -25,7 +25,7 @@ const AddSubject = (props: ModalInterface) => {
     setIsOpen(false);
   };
 
-  const handleAdd = (): void => {
+  const handleSubmit = (): void => {
     if (error.length) return;
 
     const existingSubject = subjects.find(
@@ -54,28 +54,15 @@ const AddSubject = (props: ModalInterface) => {
   }, [subjectName]);
 
   return (
-    <>
-      <Modal open={isOpen} onClose={handleClose}>
-        <Box className="add-subject-container">
-          <TextField
-            label="Name"
-            className="add-subject-container__input"
-            value={subjectName}
-            onChange={handleChange}
-            error={Boolean(error.length)}
-            helperText={error}
-          />
-          <Box className="add-subject-container__btn-group">
-            <Button variant="contained" onClick={handleClose} color="error">
-              Cancel
-            </Button>
-            <Button variant="contained" onClick={handleAdd}>
-              Add
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
-    </>
+    <SubjectModal
+      isOpen={isOpen}
+      handleClose={handleClose}
+      subjectName={subjectName}
+      handleChange={handleChange}
+      error={error}
+      handleSubmit={handleSubmit}
+      isEdit={false}
+    />
   );
 };
 
