@@ -77,7 +77,7 @@ const UserRow = (props: UserRowInterface) => {
           isOpen={editModalIsOpen}
           setIsOpen={setEditModalIsOpen}
         />
-        <DeleteUser username={user.username} />
+        <DeleteUser username={user.username} role_id={user.role_id} />
       </TableCell>
     </TableRow>
   );

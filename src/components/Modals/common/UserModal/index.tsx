@@ -40,7 +40,11 @@ const UserModal = (props: UserModalInterface) => {
     };
 
     const subjectsList = async (): Promise<any> => {
-      return dispatch(subjectsSlice.actions.setSubjects(await getSubjects()));
+      const subjects = await getSubjects();
+      return (
+        subjects !== undefined &&
+        dispatch(subjectsSlice.actions.setSubjects(subjects))
+      );
     };
 
     rolesList();
@@ -104,9 +108,11 @@ const UserModal = (props: UserModalInterface) => {
           {rolesList.length ? (
             rolesList.map((role) => {
               return (
-                <MenuItem key={role.id} value={role.id}>
-                  {role.role}
-                </MenuItem>
+                role.id !== 1 && (
+                  <MenuItem key={role.id} value={role.id}>
+                    {role.role}
+                  </MenuItem>
+                )
               );
             })
           ) : (

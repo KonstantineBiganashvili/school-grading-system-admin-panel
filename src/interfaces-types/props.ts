@@ -14,6 +14,7 @@ export interface UserRowInterface {
 
 export interface UserDeleteInterface {
   username: string;
+  role_id: number;
 }
 
 export interface UserEditInterface extends ModalInterface {
@@ -64,4 +65,8 @@ export interface SubjectModalInterface {
   error: string;
   handleSubmit: () => void;
   isEdit: boolean;
+}
+
+export interface SearchProps {
+  searchPage: string;
 }

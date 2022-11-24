@@ -1,0 +1,15 @@
+.search-container {
+  // margin: 80px 0 40px 50px;
+  width: 40%;
+
+  .search-container__input {
+    height: 30px;
+    width: 100%;
+    // width: 40%;
+
+    input {
+      margin: 2px;
+      padding: 5px;
+    }
+  }
+}

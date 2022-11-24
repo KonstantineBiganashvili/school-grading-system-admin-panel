@@ -3,10 +3,12 @@ import { Subject } from '../interfaces-types/subject';
 
 type InitialState = {
   subjectList: Array<Subject>;
+  initialSubjectsList: Array<Subject>;
 };
 
 const initialState: InitialState = {
   subjectList: [],
+  initialSubjectsList: [],
 };
 
 const subjectsSlice = createSlice({
@@ -16,6 +18,7 @@ const subjectsSlice = createSlice({
   reducers: {
     setSubjects(state, action: PayloadAction<Subject[]>) {
       state.subjectList = action.payload;
+      state.initialSubjectsList = action.payload;
     },
   },
 });
