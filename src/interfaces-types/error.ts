@@ -1,11 +1,10 @@
 import { Subject } from './subject';
 
-export interface User {
-  id: string;
-  role_id: number;
+export interface UserValidationError {
   username: string;
-  password?: string;
+  password: string;
   first_name: string;
   last_name: string;
+  role_id: string;
   subjects: Subject[];
 }

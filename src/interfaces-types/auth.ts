@@ -6,8 +6,8 @@ export interface LoginInfo {
 }
 
 export interface RegisterInfo {
-  id?: string;
-  role_id: string;
+  id: string;
+  role_id: string | number;
   username: string;
   password: string;
   first_name: string;
