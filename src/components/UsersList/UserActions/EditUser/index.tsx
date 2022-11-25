@@ -1,17 +1,23 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { Button } from '@mui/material';
-import { userEditInterface } from '../../../../interfaces-types/props';
+import { UserEditInterface } from '../../../../interfaces-types/props';
 import { Subject } from '../../../../interfaces-types/subject';
 import UserModal from '../../../Modals/common/UserModal';
 import { User } from '../../../../interfaces-types/user';
-import { editUser } from '../../../../services/api-services/users';
+import {
+  editUser,
+  getUsersList,
+} from '../../../../services/api-services/users';
 import { validateAddUserInput } from '../../../../helpers/inputValidation';
 import { UserValidationError } from '../../../../interfaces-types/error';
 import './EditUser.scss';
 import { hash } from 'bcryptjs';
+import { useAppDispatch } from '../../../../hooks/redux-hooks';
+import userSlice from '../../../../store/user-slice';
 
-const EditUser = (props: userEditInterface) => {
+const EditUser = (props: UserEditInterface) => {
   const { user, isOpen, setIsOpen } = props;
+  const dispatch = useAppDispatch();
 
   const [error, setError] = useState<UserValidationError>({
     username: '',
@@ -120,6 +126,14 @@ const EditUser = (props: userEditInterface) => {
     }
   }, [inputFields]);
 
+  useEffect(() => {
+    const usersList = async (): Promise<void> => {
+      dispatch(userSlice.actions.setUsersList(await getUsersList()));
+    };
+
+    usersList();
+  }, [dispatch, isOpen]);
+
   return (
     <>
       <UserModal
@@ -133,6 +147,7 @@ const EditUser = (props: userEditInterface) => {
         isEdit={true}
       />
       <Button
+        disabled={user?.role_id === 0}
         variant="contained"
         color="warning"
         className="action-btn"

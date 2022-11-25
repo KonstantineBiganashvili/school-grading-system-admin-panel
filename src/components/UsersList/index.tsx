@@ -1,4 +1,5 @@
 import {
+  Box,
   Table,
   TableBody,
   TableCell,
@@ -13,10 +14,15 @@ import { useEffect } from 'react';
 import { getUsersList } from '../../services/api-services/users';
 import userSlice from '../../store/user-slice';
 import './UsersList.scss';
+import Search from '../../layout/Search';
+import Filter from './Filter';
 
 const UsersList = () => {
   const dispatch = useAppDispatch();
   const users: User[] = useAppSelector((state) => state.user.usersList);
+  const filteredUsers: User[] = useAppSelector(
+    (state) => state.user.filteredUsersList
+  );
 
   useEffect(() => {
     const usersList = async (): Promise<void> => {
@@ -24,28 +30,37 @@ const UsersList = () => {
     };
 
     usersList();
-  }, [dispatch, users]);
+  }, [dispatch]);
 
   return (
-    <TableContainer className="list-container">
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Username</TableCell>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>Role</TableCell>
-            <TableCell>Subjects List</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((user) => (
-            <UserRow key={user.username} user={user} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <Box className="search-filter-container">
+        <Search searchPage="users" />
+        <Filter />
+      </Box>
+      <TableContainer className="list-container">
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Username</TableCell>
+              <TableCell>First Name</TableCell>
+              <TableCell>Last Name</TableCell>
+              <TableCell>Role</TableCell>
+              <TableCell>Subjects List</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredUsers.length === 0 &&
+              users.map((user) => <UserRow key={user.username} user={user} />)}
+            {filteredUsers.length > 0 &&
+              filteredUsers.map((user) => (
+                <UserRow key={user.username} user={user} />
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 

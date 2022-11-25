@@ -1,11 +1,11 @@
 import { Button, Modal, Box, Typography } from '@mui/material';
-import { userDeleteInterface } from '../../../../interfaces-types/props';
+import { UserDeleteInterface } from '../../../../interfaces-types/props';
 import './DeleteUser.scss';
 import { deleteUser } from '../../../../services/api-services/users';
 import { useState } from 'react';
 
-const DeleteUser = (props: userDeleteInterface) => {
-  const { username } = props;
+const DeleteUser = (props: UserDeleteInterface) => {
+  const { username, role_id } = props;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,6 +36,7 @@ const DeleteUser = (props: userDeleteInterface) => {
         </Box>
       </Modal>
       <Button
+        disabled={role_id === 0}
         variant="contained"
         color="error"
         className="action-btn"

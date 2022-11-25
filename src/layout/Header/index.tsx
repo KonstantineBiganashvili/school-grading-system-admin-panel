@@ -23,6 +23,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem('user');
     dispatch(userSlice.actions.clearUser());
+    handleClose();
     navigate('/');
   };
 
