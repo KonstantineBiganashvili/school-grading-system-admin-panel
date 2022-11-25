@@ -34,14 +34,7 @@ const UsersList = () => {
 
   return (
     <>
-      <Box
-        style={{
-          display: 'flex',
-          margin: '80px 0 40px 50px',
-          alignItems: 'center',
-          gap: '20px',
-        }}
-      >
+      <Box className="search-filter-container">
         <Search searchPage="users" />
         <Filter />
       </Box>

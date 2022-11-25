@@ -9,6 +9,7 @@ import {
 } from '../../../../services/api-services/subjects';
 import subjectsSlice from '../../../../store/subjects-slice';
 import { useAppDispatch } from '../../../../hooks/redux-hooks';
+import { useAppSelector } from './../../../../hooks/redux-hooks';
 
 const EditSubject = (props: SubjectEditInterface) => {
   const { index, subject } = props;
@@ -16,6 +17,9 @@ const EditSubject = (props: SubjectEditInterface) => {
   const [isOpen, setIsOpen] = useState(false);
   const [subjectName, setSubjectName] = useState('');
   const [error, setError] = useState('');
+  const subjects = useAppSelector(
+    (state) => state.subjects.initialSubjectsList
+  );
   const dispatch = useAppDispatch();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,13 +50,14 @@ const EditSubject = (props: SubjectEditInterface) => {
 
   useEffect(() => {
     const subjectsList = async (): Promise<void> => {
-      const subjects = await getSubjects();
-      subjects !== undefined &&
-        dispatch(subjectsSlice.actions.setSubjects(subjects));
+      const newSubjects = await getSubjects();
+      newSubjects !== undefined &&
+        newSubjects.length !== subjects.length &&
+        dispatch(subjectsSlice.actions.setSubjects(newSubjects));
     };
 
     subjectsList();
-  }, [dispatch, isOpen]);
+  }, [dispatch, isOpen, subjects.length]);
 
   return (
     <>

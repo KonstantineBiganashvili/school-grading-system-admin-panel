@@ -4,6 +4,9 @@ import { Subject } from '../interfaces-types/subject';
 
 type InitialState = {
   loggedUser: User;
+  selectedRoles: string[];
+  selectedSubjects: any[];
+  searchInputValue: string;
   usersList: User[];
   filteredUsersList: User[];
 };
@@ -19,6 +22,9 @@ const initialState: InitialState = {
     last_name: '',
     subjects: [] as Subject[],
   },
+  selectedRoles: [],
+  searchInputValue: '',
+  selectedSubjects: [],
   usersList: [],
   filteredUsersList: [],
 };
@@ -49,26 +55,81 @@ const userSlice = createSlice({
       state.usersList = action.payload;
     },
 
-    filterUsers(state, action: PayloadAction<string>) {
-      const inputValue = action.payload.toLowerCase().trim();
+    setSelectedRoles(state, action: PayloadAction<string | string[]>) {
+      state.selectedRoles =
+        typeof action.payload === 'string'
+          ? action.payload.split(',')
+          : action.payload;
+    },
 
-      if (!inputValue.trim().length) {
+    setSelectedSubjects(state, action: PayloadAction<string | string[]>) {
+      state.selectedSubjects =
+        typeof action.payload === 'string'
+          ? action.payload.split(',')
+          : action.payload;
+    },
+
+    setSearchInputValue(state, action: PayloadAction<string>) {
+      state.searchInputValue = action.payload;
+    },
+
+    filterUsers(state, action: PayloadAction<undefined>) {
+      let arrayToFilter = [...state.usersList];
+      let filteredByRole: User[] = [];
+      let filteredByName: User[] = [];
+      let filteredBySubject: User[] = [];
+
+      const inputValue = state.searchInputValue;
+
+      if (
+        !inputValue.trim().length &&
+        state.selectedRoles.length === 0 &&
+        state.selectedSubjects.length === 0
+      ) {
         state.filteredUsersList = [...state.usersList];
         return;
       }
 
-      const filteredUsers = [...state.usersList].filter((user) => {
-        if (
-          user.first_name.toLowerCase().includes(inputValue) ||
-          user.last_name.toLowerCase().includes(inputValue) ||
-          user.username.toLowerCase().includes(inputValue)
-        )
-          return true;
+      inputValue.trim().length &&
+        (filteredByName = arrayToFilter.filter((user) => {
+          if (
+            user.first_name.toLowerCase().includes(inputValue) ||
+            user.last_name.toLowerCase().includes(inputValue) ||
+            user.username.toLowerCase().includes(inputValue)
+          )
+            return true;
 
-        return false;
-      });
+          return false;
+        }));
 
-      if (filteredUsers.length === 0) {
+      filteredByName.length && (arrayToFilter = filteredByName);
+
+      state.selectedRoles.length &&
+        (filteredByRole = arrayToFilter.filter((user) => {
+          return state.selectedRoles.includes(String(user.role_id));
+        }));
+
+      arrayToFilter = [...state.usersList];
+      filteredByName.length && (arrayToFilter = filteredByName);
+      filteredByRole.length && (arrayToFilter = filteredByRole);
+
+      state.selectedSubjects.length &&
+        (filteredBySubject = arrayToFilter.filter((user) => {
+          let sameSubjects: string | any[] = [];
+          user.subjects &&
+            user.subjects.length &&
+            (sameSubjects = user.subjects.filter((subject) => {
+              return state.selectedSubjects.includes(subject.name);
+            }));
+
+          return sameSubjects.length ? true : false;
+        }));
+
+      if (
+        (inputValue.length && filteredByName.length === 0) ||
+        (state.selectedRoles.length && filteredByRole.length === 0) ||
+        (state.selectedSubjects.length && filteredBySubject.length === 0)
+      ) {
         state.filteredUsersList = [
           {
             id: '0',
@@ -84,7 +145,20 @@ const userSlice = createSlice({
         return;
       }
 
-      state.filteredUsersList = [...filteredUsers];
+      if (filteredBySubject.length) {
+        state.filteredUsersList = [...filteredBySubject];
+        return;
+      }
+
+      if (filteredByRole.length) {
+        state.filteredUsersList = [...filteredByRole];
+        return;
+      }
+
+      if (filteredByName.length) {
+        state.filteredUsersList = [...filteredByName];
+        return;
+      }
     },
   },
 });

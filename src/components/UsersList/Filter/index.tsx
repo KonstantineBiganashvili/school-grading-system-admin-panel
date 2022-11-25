@@ -10,8 +10,9 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import './Filter.scss';
-import { useAppSelector } from '../../../hooks/redux-hooks';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux-hooks';
+import { useEffect } from 'react';
+import userSlice from './../../../store/user-slice';
 
 const Filter = () => {
   const ITEM_HEIGHT = 48;
@@ -25,10 +26,14 @@ const Filter = () => {
     },
   };
 
+  const dispatch = useAppDispatch();
+
   const roles = useAppSelector((state) => state.roles.rolesList);
+  const selectedRoles = useAppSelector((state) => state.user.selectedRoles);
+  const selectedSubjects = useAppSelector(
+    (state) => state.user.selectedSubjects
+  );
   const subjects = useAppSelector((state) => state.subjects.subjectList);
-  const [selectedRoles, setSelectedRoles] = useState<Array<string>>([]);
-  const [selectedSubjects, setSelectedSubjects] = useState<Array<string>>([]);
 
   const handleRoleFilterChange = (
     event: SelectChangeEvent<typeof selectedRoles>
@@ -36,7 +41,7 @@ const Filter = () => {
     const {
       target: { value },
     } = event;
-    setSelectedRoles(typeof value === 'string' ? value.split(',') : value);
+    dispatch(userSlice.actions.setSelectedRoles(value));
   };
 
   const handleSubjectFilterChange = (
@@ -45,8 +50,24 @@ const Filter = () => {
     const {
       target: { value },
     } = event;
-    setSelectedSubjects(typeof value === 'string' ? value.split(',') : value);
+    dispatch(userSlice.actions.setSelectedSubjects(value));
   };
+
+  const renderRoleFilterValues = (): string => {
+    let valuesToRender: string[] = [];
+
+    roles.forEach((role) => {
+      selectedRoles.includes(String(role.id)) && valuesToRender.push(role.role);
+    });
+
+    return valuesToRender.join(', ');
+  };
+
+  useEffect(() => {
+    dispatch(userSlice.actions.filterUsers());
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedRoles, selectedSubjects]);
 
   return (
     <Box className="filter-container">
@@ -57,14 +78,14 @@ const Filter = () => {
           value={selectedRoles}
           onChange={handleRoleFilterChange}
           input={<OutlinedInput label="Filter By Role" />}
-          renderValue={(selected) => selected.join(', ')}
+          renderValue={() => renderRoleFilterValues()}
           style={{
             height: '50px',
           }}
         >
           {roles.map((role) => (
-            <MenuItem key={role.role} value={role.role}>
-              <Checkbox checked={selectedRoles.indexOf(role.role) > -1} />
+            <MenuItem key={role.role} value={String(role.id)}>
+              <Checkbox checked={selectedRoles.indexOf(String(role.id)) > -1} />
               <ListItemText primary={role.role} />
             </MenuItem>
           ))}
